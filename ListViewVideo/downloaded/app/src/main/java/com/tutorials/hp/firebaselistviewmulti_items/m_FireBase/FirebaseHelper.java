@@ -57,7 +57,7 @@ public class FirebaseHelper {
 
         for (DataSnapshot ds : dataSnapshot.getChildren())
         {
-            Spacecraft spacecraft=ds.getValue(Spacecraft.class);
+            Spacecraft spacecraft = ds.getValue(Spacecraft.class);
             spacecrafts.add(spacecraft);
         }
     }
