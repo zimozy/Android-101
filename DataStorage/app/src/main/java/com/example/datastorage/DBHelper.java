@@ -66,6 +66,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 Log.e("PHONE_NUMBER", phone);
             } while (cursor.moveToNext());
         }
+        cursor.close();
         mSQLiteDatabase.close();
     }
 }
