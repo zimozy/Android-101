@@ -138,7 +138,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 .build();                   // Creates a CameraPosition from the builder
 
         //display the results
-        mMap.addMarker(markerOptions);
+        mMap.addMarker(markerOptions).showInfoWindow();
         mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
         mMap.setMapType(mapType);
     }
