@@ -106,12 +106,15 @@ class HandleXML {
                     myparser.setInput(stream, null);
 
                     parseXMLAndStoreIt(myparser);
+
                     stream.close();
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
         });
+
         thread.start();
     }
 }
