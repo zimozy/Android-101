@@ -5,13 +5,13 @@ package com.example.jsonandrecyclerview;
  */
 
 public class ListItem {
-    private String head;
-    private String desc;
+    private String name;
+    private String realname;
     private String imageUrl;
 
     public ListItem(String head, String desc, String imageUrl) {
-        this.head = head;
-        this.desc = desc;
+        this.name = head;
+        this.realname = desc;
         this.imageUrl = imageUrl;
     }
 
@@ -19,12 +19,12 @@ public class ListItem {
 
     }
 
-    public String getHead() {
-        return head;
+    public String getName() {
+        return name;
     }
 
-    public String getDesc() {
-        return desc;
+    public String getRealname() {
+        return realname;
     }
 
     public String getImageUrl() {

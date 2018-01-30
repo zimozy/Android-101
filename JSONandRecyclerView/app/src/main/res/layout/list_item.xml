@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -12,23 +13,52 @@
         android:layout_margin="16dp"
         >
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="16dp">
+            android:layout_height="match_parent">
 
-            <TextView
-                android:id="@+id/textViewHead"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Heading" />
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
+                android:layout_marginBottom="0dp"
+                android:layout_marginLeft="0dp"
+                android:layout_marginTop="0dp"
+                android:layout_weight="1"
+                android:maxWidth="50dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@color/colorAccent" />
 
-            <TextView
-                android:id="@+id/textViewDesc"
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Description" />
-        </LinearLayout>
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="0dp"
+                android:orientation="vertical"
+                android:padding="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toRightOf="@+id/imageView"
+                android:layout_marginLeft="8dp">
+
+                <TextView
+                    android:id="@+id/textViewName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Name"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Headline" />
+
+                <TextView
+                    android:id="@+id/textViewRealname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="realname"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Body1" />
+            </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
+
     </android.support.v7.widget.CardView>
 </LinearLayout>
