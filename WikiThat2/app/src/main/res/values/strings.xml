@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Wiki That</string>
+    <string name="description">Description</string>
+    <string name="go">Go</string>
+    <string name="search_wikipedia">Search Wikipedia</string>
+    <string name="title">Title</string>
+    <string name="ivContentDescription">Photo of the item you searched for.</string>
+</resources>

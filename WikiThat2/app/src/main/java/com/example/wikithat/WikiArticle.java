@@ -15,17 +15,16 @@ import java.net.URL;
 
 public class WikiArticle {
 
-    private static final String TAG = "WikiArticle";
+    private static final String LOG_TAG = "WikiArticle";
+
+    //properties
     private String title;
     private String imageUrl;
     private String description;
 
-
     //constructor
     WikiArticle(final String urlString) {
         try {
-            Log.d(TAG, "running");
-
             URL url = new URL("https://en.wikipedia.org/wiki/" + urlString);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
 
@@ -38,43 +37,77 @@ public class WikiArticle {
 
             InputStream stream = connection.getInputStream();
 
-//            java.util.Scanner s = new java.util.Scanner(stream).useDelimiter("\\A");
-//            description = s.hasNext() ? s.next() : "";
-////            Log.d(TAG, string);
-
-
             XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
-
-            Log.d(TAG, "ENCODING: " + parser.getInputEncoding());
-
             parser.setFeature(XmlPullParser.FEATURE_PROCESS_NAMESPACES, false);
             parser.setInput(stream, null);
 
-            parser.nextTag();//get the first tag
-
-//                    int event;
-//                    String text = null;
-
             try {
 
-                while (parser.next() != XmlPullParser.END_DOCUMENT) {
+                parser.nextTag();//get the first tag
 
-                    Log.d(TAG, "POSITION: " + parser.getPositionDescription());
+                while (parser.next() != XmlPullParser.END_DOCUMENT) { // loop for title
 
                     String id = parser.getAttributeValue(null, "id");
 
-                    if (id == null) continue;
+                    if (id != null && id.equals("firstHeading")) {
 
-                    switch (id) {
-                        case "firstHeading":
-                            Log.d(TAG, "first heading: " + id);
-                            parser.next();
-                            title = parser.getText();
-                            Log.d(TAG, title);
-                            break;
-                        default:
-                            Log.d(TAG, "default switch: " + id);
-                            break;
+                        parser.next();
+                        title = parser.getText(); //set title
+
+                        while (parser.next() != XmlPullParser.END_DOCUMENT) { // loop for img src
+
+                            if (parser.getEventType() == XmlPullParser.START_TAG
+                                    && parser.getName().equals("img")) {
+
+                                imageUrl = "https://"
+                                            + parser.getAttributeValue(null, "src")
+                                            .substring(2); //remove the first two slashes
+                                Log.d(LOG_TAG, imageUrl);
+
+                                while (parser.next() != XmlPullParser.END_DOCUMENT) { // loop for description
+
+                                    if (parser.getEventType() == XmlPullParser.START_TAG // found firs <p>, now find the next one
+                                            && parser.getName().equals("p")) {
+
+                                        while (parser.next() != XmlPullParser.END_DOCUMENT) { //loop to the SECOND <p> element
+
+                                            if (parser.getEventType() == XmlPullParser.START_TAG
+                                                    && parser.getName().equals("p")) {
+
+                                                description = ""; // just so it doesn't say "null"
+
+                                                while (parser.next() != XmlPullParser.END_DOCUMENT) {
+
+                                                    if (parser.getEventType() == XmlPullParser.TEXT) { // if it is a TEXT event
+
+                                                        String text = parser.getText();
+
+                                                        if (!text.matches("\\[.+?\\]")) { // remove foot notes
+                                                            Log.d(LOG_TAG, text);
+                                                            description += text; // add it to the description string
+                                                        }
+                                                    }
+
+                                                    if (parser.getEventType() == XmlPullParser.START_TAG // if we get to the second paragraph
+                                                            && parser.getName().equals("p")) {
+                                                        //end the whole thing
+                                                        return;
+                                                    }
+
+                                                }
+
+                                            }
+
+                                        }
+
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
                     }
                 }
             } catch (Exception e) {
@@ -96,5 +129,7 @@ public class WikiArticle {
         return description;
     }
 
-
+    public String getImageUrl() {
+        return imageUrl;
+    }
 }
