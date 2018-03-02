@@ -5,9 +5,12 @@ import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ThemedSpinnerAdapter;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -55,5 +58,36 @@ public class LoginActivity extends AppCompatActivity {
                 );
             }
         });
+
+        final Button loginButton = (Button) findViewById(R.id.login_button);
+        loginButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String enteredEmail = emailInput.getText().toString();
+                String enteredPassword = passwordInput.getText().toString();
+
+                if (TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword)) {
+                    Helper.displayMessageToast(LoginActivity.this, "Login fields must be filled.");
+                    return;
+                }
+
+                ((FirebaseApplication) getApplication()).loginAUser(LoginActivity.this, enteredEmail, enteredPassword, loginError);
+            }
+        });
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        //mAuth.addAuthStateListener(((FirebaseApplication)getApplication()).mAuthListener);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (((FirebaseApplication)getApplication()).mAuthListener != null) {
+            //mAuth.removeAuthStateListener(((FirebaseApplication)getApplication()).mAuthListener);
+        }
     }
 }
