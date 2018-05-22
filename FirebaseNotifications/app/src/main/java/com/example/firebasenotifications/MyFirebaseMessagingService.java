@@ -1,5 +1,6 @@
 package com.example.firebasenotifications;
 
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -21,6 +22,7 @@ import java.util.Map;
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
     private final static String TAG =  "MyFBMessagingService";
+    private static final String CHANNEL_ID = "Channel ID";
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -57,9 +59,25 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 .setContentText(body)
                 .setAutoCancel(true)
                 .setSound(notificationSound)
-                .setContentIntent(pendingIntent);
+                .setContentIntent(pendingIntent)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+        NotificationChannel channel = null;
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+
+            channel = new NotificationChannel("default",
+                    "My FB Notification Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            channel.setDescription("This is a test notification channel");
+
+            notificationManager.createNotificationChannel(channel);
+        }
+
         notificationManager.notify(0, notifBuilder.build());
 
 
